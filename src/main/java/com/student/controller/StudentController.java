@@ -14,78 +14,70 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.student.model.Student;
 import com.student.service.IStudentService;
 
 @RestController
 public class StudentController {
 
-	
 	@Autowired
 	private IStudentService studentService;
+
 	
+	//Method to add new student
 	@PostMapping("/student")
-	Integer createStudent(@RequestBody Student student)
-	{
+	Integer createStudent(@RequestBody Student student) {
 		Integer id = studentService.saveStudent(student);
 		System.out.println(id);
-		
+
 		return id;
-		
+
 	}
-	
+
+	//Method to get all student
 	@GetMapping("/student")
-	public List<Student> getAllStudent()
-	{
+	public List<Student> getAllStudent() {
 		return studentService.getAllStudent();
 	}
-	
-	@DeleteMapping("/student/{sid}")
-	public ResponseEntity<Student> deleteStudent(@PathVariable Integer sid)
-	{
 
-		
+	//Method to delete student
+	@DeleteMapping("/student/{sid}")
+	public ResponseEntity<Student> deleteStudent(@PathVariable Integer sid) {
+
 		System.out.println(sid);
 		ResponseEntity<Student> responseEntity = new ResponseEntity<>(HttpStatus.OK);
-		try 
-		{
+		try {
 			studentService.deleteStudent(sid);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		 responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return responseEntity;
-		
-	
-		
+
 	}
 	
+	//method to update student
 	@PutMapping("/updateStudentById/{sid}")
-	public ResponseEntity<Student> updateStudent(@PathVariable Integer sid , @RequestBody Student student ) throws Exception
-	{
-		return new ResponseEntity<Student>(studentService.updateStudent(student, sid),HttpStatus.OK);
-		
+	public ResponseEntity<Student> updateStudent(@PathVariable Integer sid, @RequestBody Student student)
+			throws Exception {
+		return new ResponseEntity<Student>(studentService.updateStudent(student, sid), HttpStatus.OK);
+
 	}
-	
+	//method to get student by id
 	@GetMapping("/getStudentbyid/{id}")
-	public Optional<Student> getStudentById(@PathVariable Integer id)
-	{
-		
+	public Optional<Student> getStudentById(@PathVariable Integer id) {
+
 		Optional<Student> student = studentService.getStudentById(id);
 		return student;
-		
+
 	}
-	
+	//method to get student by class
 	@GetMapping("/getStudentbyclass/{classNo}")
-	public List<Student> getStudentByClass( @PathVariable Integer classNo )
-	{
-		
+	public List<Student> getStudentByClass(@PathVariable Integer classNo) {
+
 		List<Student> studentByClass = studentService.getStudentByClass(classNo);
 		return studentByClass;
-		
+
 	}
-	
-	
+
 }
